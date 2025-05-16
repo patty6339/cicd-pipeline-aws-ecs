@@ -126,7 +126,7 @@ variable "website_url" {
 variable "github_repo" {
   type        = string
   description = "GitHub repository for the source code (format: owner/repo)"
-  default     = "OjoOluwagbenga700/E-Commerce-CICD-with-ECS.git"
+  default     = "OjoOluwagbenga700/E-Commerce-CICD-with-ECS"
 }
 
 variable "github_branch" {
