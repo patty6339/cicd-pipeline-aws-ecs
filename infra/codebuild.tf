@@ -18,7 +18,7 @@ resource "aws_iam_role" "codebuild_role" {
 
 # IAM policy for CodeBuild
 resource "aws_iam_policy" "codebuild_policy" {
-  name = "e-commerce-codebuild-policy"
+  name        = "e-commerce-codebuild-policy"
   description = "Policy for CodeBuild to access required resources"
 
   policy = jsonencode({
@@ -30,7 +30,7 @@ resource "aws_iam_policy" "codebuild_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -56,7 +56,7 @@ resource "aws_iam_policy" "codebuild_policy" {
           "ecr:CompleteLayerUpload",
           "ecr:PutImage"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -64,14 +64,14 @@ resource "aws_iam_policy" "codebuild_policy" {
           "ecs:DescribeTaskDefinition",
           "ecs:RegisterTaskDefinition"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
         Action = [
           "iam:PassRole"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = aws_iam_role.ecs_task_execution_role.arn
       }
     ]
@@ -97,10 +97,10 @@ resource "aws_codebuild_project" "e_commerce_build" {
   }
 
   environment {
-    type                        = "LINUX_CONTAINER"
-    compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
-    privileged_mode             = true
+    type            = "LINUX_CONTAINER"
+    compute_type    = "BUILD_GENERAL1_SMALL"
+    image           = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+    privileged_mode = true
 
     environment_variable {
       name  = "AWS_DEFAULT_REGION"

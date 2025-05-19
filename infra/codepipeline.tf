@@ -19,7 +19,7 @@ resource "aws_iam_role" "codepipeline_role" {
 
 # IAM policy for CodePipeline
 resource "aws_iam_policy" "codepipeline_policy" {
-  name = "e-commerce-codepipeline-policy"
+  name        = "e-commerce-codepipeline-policy"
   description = "Policy for CodePipeline to access required resources"
 
   policy = jsonencode({
@@ -43,7 +43,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codebuild:BatchGetBuilds",
           "codebuild:StartBuild"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -54,7 +54,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codecommit:GetUploadArchiveStatus",
           "codecommit:CancelUploadArchive"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -66,7 +66,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codedeploy:GetDeploymentConfig",
           "codedeploy:RegisterApplicationRevision"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -78,14 +78,14 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "ecs:RegisterTaskDefinition",
           "ecs:UpdateService"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
         Action = [
           "iam:PassRole"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
         Condition = {
           StringEqualsIfExists = {
@@ -131,6 +131,8 @@ resource "aws_codepipeline" "e_commerce_pipeline" {
         ConnectionArn    = aws_codestarconnections_connection.github_connection.arn
         FullRepositoryId = var.github_repo
         BranchName       = var.github_branch
+        DetectChanges    = true
+
       }
     }
   }
@@ -182,4 +184,3 @@ resource "aws_codestarconnections_connection" "github_connection" {
   provider_type = "GitHub"
 }
 
-#

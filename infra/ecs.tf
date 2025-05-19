@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "ecs_task_trust" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "Service" 
+      type        = "Service"
       identifiers = ["ecs-tasks.amazonaws.com"]
     }
   }
@@ -111,7 +111,9 @@ resource "aws_ecs_service" "ecs_service" {
   depends_on = [
     aws_lb_target_group.alb_tg,
     aws_security_group.ecs_task_sg,
-    aws_ecs_task_definition.task_definition
+    aws_ecs_task_definition.task_definition,
+    aws_lb_listener.alb_https_listener,
+    aws_lb_listener.alb_http_listener
   ]
 
   # Add health check grace period to allow container time to start

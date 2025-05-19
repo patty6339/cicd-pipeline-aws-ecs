@@ -1,6 +1,6 @@
 # S3 bucket to store pipeline artifacts
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "e-commerce-cicd-artifacts-${data.aws_caller_identity.current.account_id}"
+  bucket        = "e-commerce-cicd-artifacts-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
 }
 

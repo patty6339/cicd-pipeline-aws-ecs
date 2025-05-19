@@ -9,7 +9,7 @@ variable "ecs_cluster_name" {
 # Name of the ECS service
 variable "service_name" {
   type        = string
-  default     = "e-commerce-service" 
+  default     = "e-commerce-service"
   description = "UI ECS service name"
 
 }
@@ -122,7 +122,7 @@ variable "website_url" {
 }
 
 
- #Add GitHub repository and branch variables
+#Add GitHub repository and branch variables
 variable "github_repo" {
   type        = string
   description = "GitHub repository for the source code (format: owner/repo)"

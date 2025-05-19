@@ -58,13 +58,13 @@ resource "aws_lb_target_group" "alb_tg_blue" {
     unhealthy_threshold = 3
   }
   depends_on = [aws_lb.alb]
-  
+
   lifecycle {
     #create_before_destroy = true
   }
 }
 
- 
+
 
 # Create HTTP listener on port 80 that redirects all traffic to HTTPS
 # Implements security best practice of forcing HTTPS
@@ -98,6 +98,6 @@ resource "aws_lb_listener" "alb_https_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_tg.arn
   }
-  depends_on = [aws_acm_certificate.acm_certificate] 
+  depends_on = [aws_acm_certificate.acm_certificate]
 }
 

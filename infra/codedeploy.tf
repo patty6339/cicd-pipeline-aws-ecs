@@ -20,9 +20,9 @@ resource "aws_iam_role" "codedeploy_role" {
 resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
   role       = aws_iam_role.codedeploy_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
-  }
+}
 
-  # CodeDeploy application
+# CodeDeploy application
 resource "aws_codedeploy_app" "e_commerce_app" {
   name             = "e-commerce-app"
   compute_platform = "ECS"
