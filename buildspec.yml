@@ -15,8 +15,9 @@ phases:
       - echo Building the Docker image...
       - cd infra/src
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-  
+      - docker tag $REPOSITORY_URI:latest $IMAGE_TAG
+      - cd ../..   # Return to root for post_build
+
   post_build:
     commands:
       - echo Build completed on `date`
@@ -24,14 +25,11 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION --query taskDefinition > taskdef.json
-      - envsubst < appspec_template.yaml > appspec.yaml
-      - envsubst < taskdef_template.json > taskdef.json
+      - envsubst < infra/src/taskdef_template.json > taskdef.json
+      - envsubst < infra/src/appspec_template.yaml > appspec.yaml
 
 artifacts:
   files:
     - appspec.yaml
     - taskdef.json
-    - infra/src/appspec_template.yaml
-    - infra/src/taskdef_template.json
   discard-paths: yes
