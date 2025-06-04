@@ -27,16 +27,11 @@ The CI/CD pipeline automates the build and deployment process:
 
 ### 1. Update GitHub Repository Information
 
-Update the GitHub repository variables in `infra/cicd.tf`:
+Update the GitHub repository variables in `infra/terraform.tfvars`:
 
 ```hcl
-variable "github_repo" {
-  default = "your-github-username/e-commerce-website-with-ecs"
-}
-
-variable "github_branch" {
-  default = "main"
-}
+github_repo  = "your-github-username/e-commerce-website-with-ecs"
+github_branch = "main"
 ```
 
 ### 2. Deploy Infrastructure
@@ -44,7 +39,8 @@ variable "github_branch" {
 ```bash
 cd infra
 terraform init
-terraform apply
+terraform plan
+terraform apply --auto-approve
 ```
 
 ### 3. Complete GitHub Connection
@@ -75,12 +71,6 @@ git push origin main
 - **CodePipeline**: Orchestrates the CI/CD workflow
 - **CodeBuild**: Builds Docker images
 - **CodeDeploy**: Deploys to ECS with blue/green strategy
-
-## Customization
-
-- Update container settings in `infra/variable.tf`
-- Modify the website content in `infra/src/`
-- Adjust deployment settings in `infra/cicd.tf`
 
 ## Cleanup
 
