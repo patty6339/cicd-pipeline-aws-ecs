@@ -131,6 +131,10 @@ resource "aws_codebuild_project" "e_commerce_build" {
       name  = "EXECUTION_ROLE_ARN"
       value = aws_iam_role.ecs_task_execution_role.arn
     }
+        environment_variable {
+      name  = "TASK_ROLE_ARN"
+      value = aws_iam_role.ecs_task_role.arn
+    }
 
     environment_variable {
       name  = "TASK_CPU"

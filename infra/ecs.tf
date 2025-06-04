@@ -16,6 +16,11 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_task_trust.json
 }
 
+resource "aws_iam_role" "ecs_task_role" {
+  name               = "EcsTaskRole"
+  assume_role_policy = data.aws_iam_policy_document.ecs_task_trust.json
+}
+
 # Attaches the AWS managed policy that grants permissions needed by the ECS task execution service
 # This includes permissions for pulling container images and publishing logs
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_attach" {
@@ -59,7 +64,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   # IAM roles for task execution and task role
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn      = aws_iam_role.ecs_task_role.arn
 
   runtime_platform {
     cpu_architecture        = "X86_64"
