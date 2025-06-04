@@ -118,5 +118,5 @@ variable "websiteurl" {
   description = "URL of the deployed website"
   type        = string
   default     = "www.7hundredtechnologies.com/"
-  
+
 }

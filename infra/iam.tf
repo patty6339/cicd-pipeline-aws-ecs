@@ -86,7 +86,7 @@ resource "aws_iam_policy" "codebuild_policy" {
       {
         Action   = ["ecs:DescribeTaskDefinition", "ecs:RegisterTaskDefinition"]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:task-definition/${var.family}:*"
       },
       {
         Action = [
@@ -183,20 +183,36 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codedeploy:GetDeploymentConfig",
           "codedeploy:RegisterApplicationRevision"
         ]
-        Effect   = "Allow"
-        Resource = "*"
+        Effect = "Allow"
+        Resource = [
+          aws_codedeploy_app.e_commerce_app.arn,
+          aws_codedeploy_deployment_group.e_commerce_deployment_group.arn,
+          "arn:aws:codedeploy:${var.aws_region}:${data.aws_caller_identity.current.account_id}:deploymentconfig:CodeDeployDefault.ECSAllAtOnce"
+        ]
       },
       {
         Action = [
           "ecs:DescribeServices",
-          "ecs:DescribeTaskDefinition",
-          "ecs:DescribeTasks",
-          "ecs:ListTasks",
-          "ecs:RegisterTaskDefinition",
           "ecs:UpdateService"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = aws_ecs_service.ecs_service.arn
+      },
+      {
+        Action = [
+          "ecs:DescribeTaskDefinition",
+          "ecs:RegisterTaskDefinition"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:task-definition/${var.family}:*"
+      },
+      {
+        Action = [
+          "ecs:DescribeTasks",
+          "ecs:ListTasks"
+        ]
+        Effect   = "Allow"
+        Resource = aws_ecs_cluster.cluster.arn
       },
       {
         Action = [
