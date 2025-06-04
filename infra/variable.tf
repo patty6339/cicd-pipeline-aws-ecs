@@ -113,3 +113,10 @@ variable "codepipeline_bucket_name" {
   description = "Name of the S3 bucket for CodePipeline artifacts"
   type        = string
 }
+
+variable "websiteurl" {
+  description = "URL of the deployed website"
+  type        = string
+  default     = "www.7hundredtechnologies.com/"
+  
+}

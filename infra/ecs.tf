@@ -1,39 +1,3 @@
-# This policy document defines the trust relationship allowing ECS tasks to assume this role
-# by specifying the ecs-tasks.amazonaws.com service principal
-data "aws_iam_policy_document" "ecs_task_trust" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-  }
-}
-
-# Creates an IAM role that ECS tasks can assume, using the trust policy defined above
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "EcsTaskExecutionRole"
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_trust.json
-}
-
-resource "aws_iam_role" "ecs_task_role" {
-  name               = "EcsTaskRole"
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_trust.json
-}
-
-# Attaches the AWS managed policy that grants permissions needed by the ECS task execution service
-# This includes permissions for pulling container images and publishing logs
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_attach" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-# Attaches the AWS Systems Manager policy required for ECS Exec functionality
-# This allows executing commands in running containers for debugging purposes
-resource "aws_iam_role_policy_attachment" "ecs_exec_policy" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
 
 
 # ECS cluster definition

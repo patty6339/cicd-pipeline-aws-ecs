@@ -6,7 +6,7 @@ resource "aws_route53_zone" "hosted_zone" {
 
 ## Create  Route 53 records
 resource "aws_route53_record" "websiteurl" {
-  name    = var.domain_name
+  name    = var.websiteurl
   zone_id = aws_route53_zone.hosted_zone.id
   type    = "A"
 

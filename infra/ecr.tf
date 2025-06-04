@@ -18,6 +18,7 @@ resource "aws_ecr_repository" "ecr_repo" {
   name = var.repository_name
   # Allow image tags to be overwritten
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
 }
 
