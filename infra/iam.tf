@@ -184,10 +184,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codedeploy:RegisterApplicationRevision"
         ]
         Effect   = "Allow"
-        Resource = [
-          aws_codedeploy_app.e_commerce_app.arn,
-          aws_codedeploy_deployment_group.e_commerce_deployment_group.arn
-        ]
+        Resource = "*"
       },
       {
         Action = [
@@ -199,7 +196,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "ecs:UpdateService"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster:e-commerce-cluster"
+        Resource = "*"
       },
       {
         Action = [
