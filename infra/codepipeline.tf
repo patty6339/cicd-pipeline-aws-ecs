@@ -1,4 +1,3 @@
-
 # IAM role for CodePipeline
 resource "aws_iam_role" "codepipeline_role" {
   name = "e-commerce-codepipeline-role"
@@ -37,6 +36,13 @@ resource "aws_iam_policy" "codepipeline_policy" {
           aws_s3_bucket.codepipeline_bucket.arn,
           "${aws_s3_bucket.codepipeline_bucket.arn}/*"
         ]
+      },
+      {
+        Action = [
+          "codestar-connections:UseConnection"
+        ]
+        Effect   = "Allow"
+        Resource = aws_codestarconnections_connection.github_connection.arn
       },
       {
         Action = [
@@ -106,6 +112,12 @@ resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
   policy_arn = aws_iam_policy.codepipeline_policy.arn
 }
 
+# GitHub connection for CodePipeline
+resource "aws_codestarconnections_connection" "github_connection" {
+  name          = "github-connection"
+  provider_type = "GitHub"
+}
+
 # CodePipeline
 resource "aws_codepipeline" "e_commerce_pipeline" {
   name     = "e-commerce-pipeline"
@@ -132,7 +144,6 @@ resource "aws_codepipeline" "e_commerce_pipeline" {
         FullRepositoryId = var.github_repo
         BranchName       = var.github_branch
         DetectChanges    = true
-
       }
     }
   }
@@ -176,11 +187,5 @@ resource "aws_codepipeline" "e_commerce_pipeline" {
       }
     }
   }
-}
-
-# GitHub connection for CodePipeline
-resource "aws_codestarconnections_connection" "github_connection" {
-  name          = "github-connection"
-  provider_type = "GitHub"
 }
 
