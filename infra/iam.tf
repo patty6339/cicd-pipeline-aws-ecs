@@ -172,7 +172,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
       {
         Action   = ["codebuild:BatchGetBuilds", "codebuild:StartBuild"]
         Effect   = "Allow"
-        Resource = aws_codebuild_project.e_commerce_build.arn
+        Resource = "arn:aws:codebuild:${var.aws_region}:${data.aws_caller_identity.current.account_id}:project:e-commerce-build"
       },
       {
         Action = [
@@ -184,7 +184,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "codedeploy:RegisterApplicationRevision"
         ]
         Effect   = "Allow"
-        Resource = aws_codedeploy_app.e_commerce_app.arn
+        Resource = "arn:aws:codedeploy:${var.aws_region}:${data.aws_caller_identity.current.account_id}:application:e-commerce-app"
       },
       {
         Action = [
@@ -196,7 +196,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "ecs:UpdateService"
         ]
         Effect   = "Allow"
-        Resource = aws_ecs_cluster.cluster.arn
+        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster:e-commerce-cluster"
       },
       {
         Action = [
