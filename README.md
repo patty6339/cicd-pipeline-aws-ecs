@@ -6,7 +6,7 @@ To enable a smooth and reliable delivery pipeline, we’ve implemented AWS CodeP
 
 In this article, we’ll walk you through each step of this architecture, explain its key components, and show you how you can deploy a scalable, containerized e-commerce platform with confidence, ease, and operational excellence.
 
-## Architecture
+## Project Architecture
 
 <p align="center">
 <img src="https://i.imgur.com/PJ4eSIE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
@@ -14,7 +14,6 @@ In this article, we’ll walk you through each step of this architecture, explai
   
 ## Infrastructure Components
 
-- **Frontend**: Static HTML/CSS/JS website
 - **VPC**: Isolated network with public and private subnets
 - **ECS Cluster**: Fargate-based container hosting
 - **ALB**: Load balancer for routing traffic
