@@ -9,38 +9,36 @@ In this article, we’ll walk you through each step of this architecture, explai
 ## Architecture
 
 <p align="center">
-<img src="[https://i.imgur.com/PJ4eSIE.png]" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/PJ4eSIE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
   
+## Infrastructure Components
+
 - **Frontend**: Static HTML/CSS/JS website
-- **Infrastructure**: AWS ECS Fargate, ALB, VPC, ECR
-- **CI/CD**: AWS CodePipeline, CodeBuild, CodeDeploy
+- **VPC**: Isolated network with public and private subnets
+- **ECS Cluster**: Fargate-based container hosting
+- **ALB**: Load balancer for routing traffic
+- **ECR**: Container registry for Docker images
+- **CodePipeline**: Orchestrates the CI/CD workflow
+- **CodeBuild**: Builds Docker images
+- **CodeDeploy**: Deploys to ECS with blue/green strategy
 
 ## How it Works
 
 The architecture is designed to enable continuous delivery with zero-downtime deployments while retaining complete control over your stack through Infrastructure as Code. Here’s a step-by-step walkthrough of how everything works together:
 
-## Developer Pushes Code to GitHub
-The pipeline starts when a developer pushes a new code change to the application’s GitHub repository (typically to the main or master branch).
+- **Developer Pushes Code to GitHub**: The pipeline starts when a developer pushes a new code change to the application’s GitHub repository (typically to the main or master branch).
+- **Source Capture by CodePipeline**: AWS CodePipeline is configured to track this repository. Once a new commit is made, CodePipeline is triggered, retrieving the updated code for processing.
+- **Docker Image Build and Push to ECR**: CodeBuild, integrated into the pipeline, builds a new Docker image from your application’s source code. This image is then pushed to Amazon Elastic Container Registry (ECR), a fully managed container image repository.
 
-## Source Capture by CodePipeline
-AWS CodePipeline is configured to track this repository. Once a new commit is made, CodePipeline is triggered, retrieving the updated code for processing.
+- **Infrastructure Managed by Terraform**: All related AWS resources — VPC, ECS Cluster, Application Load Balancer, Security Groups, Auto Scaling configuration, and more — are defined and deployed using Terraform. This guarantees a consistent, auditable, and reproducible environment across stages (development, staging, production).
 
-## Docker Image Build and Push to ECR
-CodeBuild, integrated into the pipeline, builds a new Docker image from your application’s source code. This image is then pushed to Amazon Elastic Container Registry (ECR), a fully managed container image repository.
-
-## Infrastructure Managed by Terraform
-All related AWS resources — VPC, ECS Cluster, Application Load Balancer, Security Groups, Auto Scaling configuration, and more — are defined and deployed using Terraform. This guarantees a consistent, auditable, and reproducible environment across stages (development, staging, production).
-
-## Blue/Green Deployment with ECS and ALB
-ECS Fargate runs your container workloads in tasks placed within your ECS Cluster.
+- **Blue/Green Deployment with ECS and ALB**: ECS Fargate runs your container workloads in tasks placed within your ECS Cluster.
 The Application Load Balancer is configured with blue and green target groups — allowing for a shift of live traffic from the old version (blue) to the new version (green) — after health checks pass, ensuring zero-downtime for your users.
 
-## Automated Validation and Promotion
-Once the new containers become healthy, CodePipeline performs automated checks (such as health checks or smoke tests). If everything is healthy, the pipeline promotes the green environment, sending all live customer requests to it. The previous (blue) environment is kept alive briefly for fallback if needed.
+- **Automated Validation and Promotion**: Once the new containers become healthy, CodePipeline performs automated checks (such as health checks or smoke tests). If everything is healthy, the pipeline promotes the green environment, sending all live customer requests to it. The previous (blue) environment is kept alive briefly for fallback if needed.
 
-## Continuous Improvement and Repeat
-This process forms a fully automated pipeline — from code commit to production — allowing you to deploy new features and bug fixes safely, frequently, and efficiently, with confidence in your platform’s stability.
+- **Continuous Improvement and Repeat** This process forms a fully automated pipeline — from code commit to production — allowing you to deploy new features and bug fixes safely, frequently, and efficiently, with confidence in your platform’s stability.
 
 ## Prerequisites
 
@@ -87,16 +85,6 @@ git add .
 git commit -m "Initial commit"
 git push origin main
 ```
-
-## Infrastructure Components
-
-- **VPC**: Isolated network with public and private subnets
-- **ECS Cluster**: Fargate-based container hosting
-- **ALB**: Load balancer for routing traffic
-- **ECR**: Container registry for Docker images
-- **CodePipeline**: Orchestrates the CI/CD workflow
-- **CodeBuild**: Builds Docker images
-- **CodeDeploy**: Deploys to ECS with blue/green strategy
 
 ## Cleanup
 
