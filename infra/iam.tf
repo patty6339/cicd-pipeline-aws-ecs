@@ -196,7 +196,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
           "ecs:UpdateService"
         ]
         Effect   = "Allow"
-        Resource = aws_ecs_service.ecs_service.arn
+        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:service/${var.service_name}"
       },
       {
         Action = [
