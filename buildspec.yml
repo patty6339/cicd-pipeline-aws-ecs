@@ -12,6 +12,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - echo Building the Docker image...
       - cd infra/src
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
@@ -24,9 +25,11 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"ecs-repo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - envsubst < infra/src/taskdef_template.json > taskdef.json
+      - envsubst < infra/src/appspec_template.yaml > appspec.yaml
 
 artifacts:
   files:
-    - imagedefinitions.json
+    - appspec.yaml
+    - taskdef.json
   discard-paths: yes
