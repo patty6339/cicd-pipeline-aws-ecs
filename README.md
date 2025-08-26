@@ -74,3 +74,39 @@ In `infra/terraform.tfvars`:
 ```hcl
 github_repo   = "your-github-username/e-commerce-website-with-ecs"
 github_branch = "main"
+
+2. Deploy Infrastructure
+cd infra
+terraform init
+terraform plan
+terraform apply --auto-approve
+
+3. Complete GitHub Connection
+
+Go to AWS Console > Developer Tools > Settings > Connections
+
+Find the connection named github-connection
+
+Click Update pending connection
+
+Authenticate with your GitHub account
+
+4. Push Code to Trigger Pipeline
+git add .
+git commit -m "Initial commit"
+git push origin main
+
+🧹 Cleanup
+
+To remove all resources:
+
+cd infra
+terraform destroy
+
+📌 Project Info
+
+Project Name: E-Commerce-CICD-with-ECS
+
+Focus: ECS Fargate + Terraform + AWS CodePipeline
+
+Pipeline: GitHub → CodePipeline → CodeBuild → ECR → ECS (Blue/Green)
